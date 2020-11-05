@@ -1,0 +1,35 @@
+@import "variables";
+
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
+@import "~bootstrap/scss/bootstrap";
+@import "buttons";
+@import "header";
+
+/*body {
+  background: map-get($colors, bg_purple);
+} */
+
+.main-app {
+
+  background: map-get($colors, bg_purple);
+  display: grid;
+  grid-gap: 2em;
+  grid-template-columns: 300px 1fr;
+
+
+}
+
+.site-header {
+
+  background: red;
+  height: 100vh;
+}
+
+.app-container {
+
+  background: map-get($colors, dark_blue);
+  height: 100vh;
+}

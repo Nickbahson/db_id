@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+<article class="media content-section">
+        <div class="media-body">
+          <div class="article-metadata">
+            <small class="text-muted">{{ item.created_on.strftime('%Y-%m-%d') }}</small>
+          </div>
+            <div>
+                    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('items.update_item', item_id=item.id)}}"> Update </a>
+                    <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
+
+                </div>
+          <h2 class="article-title">{{ item.title }}</h2>
+          <p class="article-content">{{ item.comment }}</p>
+        </div>
+</article>
+
+{% endblock content %}
