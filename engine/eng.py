@@ -22,5 +22,5 @@ db.create_all(app=app)
 
 if  __name__ == "__main__":
     logger.info('HELLO DEBUG LOGGIN!!!!!!!!!!!')
-    #Generate().generate(1000)
+    #-Generate().generate(1000)
     app.run(debug=True)

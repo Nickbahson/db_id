@@ -2,10 +2,11 @@ const axios = require('axios');
 
 const instance = axios.create({
     baseURL: 'http://127.0.0.1:5000/api/',
-    timeout: 1000,
+    timeout: 2500,
     headers: {'Content-Type': 'application/json'}
 });
 
+// TODO:: add token
 
 function getSearchResults(term, page) {
 
@@ -15,13 +16,12 @@ function getSearchResults(term, page) {
             limit: 10})
         .then((res) => {
             const { data: results } = res
-
-            console.log(results)
-
             return results
         })
         .catch((ex) => {
             console.log(ex)
+
+            return {items: [], items_pp: 50, page: 1, pages: [], error: ex.message}
         })
 
 }

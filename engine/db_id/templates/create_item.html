@@ -1,6 +1,7 @@
 {% extends 'layout.html' %}
 {% block content %}
 <div class="content-section">
+    <div id="create_item_form"> Loading form ....</div>
     <form method="POST" action="">
         {{ form.hidden_tag() }}
         <fieldset class="form-group">
@@ -39,3 +40,9 @@
 </div>
 
 {% endblock content %}
+
+{% block javascript %}
+    <script src="{{ url_for('static', filename='libs/build/create_item_form.bundle.js') }}">
+
+    </script>
+{% endblock javascript %}

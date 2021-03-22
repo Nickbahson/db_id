@@ -37,6 +37,7 @@ def create_app(config_class=Config):
     #search.init_app(app)
 
     #Cors support
+    # TODO:: do better
     ORIGINS = [
         'http://localhost:8080',  # React
         'http://127.0.0.1:8080',  # React

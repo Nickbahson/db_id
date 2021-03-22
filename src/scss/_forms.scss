@@ -1,0 +1,45 @@
+#home_search .content {
+  background: red;
+  position: relative;
+}
+
+
+// edit-form should have a container
+// that's 100% width 100% height
+// that holds it's content (edit-form)
+// at the center of the page.
+
+.edit-section {
+  width: 100%;
+  margin: auto;
+  background: green;
+  min-height: 50vh;
+  //position: absolute;
+  //z-index: 3;
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  justify-items: center;
+}
+.edit-form {
+  background: #0f6674;
+  /*text-align: center;
+  display: grid;
+  grid-template-columns: 1fr;
+  max-width: 50%; */
+
+  /*top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: auto;
+  padding: 2rem;
+  box-sizing: border-box; */
+
+
+
+
+}
+
+.item-table {
+  //display: none;
+}

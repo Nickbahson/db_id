@@ -1,22 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { getSearchResults, updateItemRq } from '../services/httpService'
 import DataTable, { createTheme } from 'react-data-table-component';
 import EditItem from "./EditItem";
 import { format } from 'date-fns';
 import CreateItemForm from "./CreateItemForm";
-console.log('REACT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
 
 function SearchForm({addTerm, term}) {
-    //const [value, setValue] = useState('')
-
-    //console.log(value)
-    //addTerm(value)
 
     const handleSubmit = e => {
         e.preventDefault()
-        /*if(!value) return
-        addTerm(value)
-        setValue('') */
+
     }
     return (
         <form onSubmit={handleSubmit}>
@@ -51,10 +45,46 @@ createTheme('solarized', {
     },
 });
 
+const Pagination = ({edit_view, items, columns, pages, handlePaginate}) => {
+
+
+    if(pages.length === 0 || edit_view) return null
+
+    return (
+        <React.Fragment>
+            <DataTable
+                className="item-table"
+                theme="solarized"
+                columns={columns}
+                data={items}
+                title='DB ID items...'
+                striped={true}
+                highlightOnHover={true}
+                pointerOnHover={true}
+                defaultSortField="id"
+                defaultSortAsc={true}
+
+            />
+
+            <ul>
+                {
+                    pages.map(page => {
+
+                        if (pages.length >= 1) return null
+                        if(page) return <li className="btn btn-outline-info mb-4" onClick={(e) => handlePaginate(e.target.value)} key={page} value={page}>{page}</li>
+                        return <li className="btn btn-outline-info mb-4" key={uuidv4()}>...</li>
+                    })
+                }
+            </ul>
+        </React.Fragment>
+    )
+
+}
+
 const HomeSearch = () => {
 
     const [search_value, setSearchValue ] = useState('')
-    const [search_results, setData ] = useState({})
+    const [search_results, setData ] = useState({items: [], items_pp: 50, page: 1, pages: []})
     const [edit_view, setEditView ] = useState(false)
     const [edit_item, setEditItem ] = useState({})
     const [page, setPage ] = useState(1)
@@ -65,26 +95,17 @@ const HomeSearch = () => {
             .then((results) => {
                 setData(results)
             })
-
-        console.log(search_value)
-        console.log('*********** SEARCH VALUE *************')
-        console.log('*********** SEARCH DATA *************')
-        console.log('*********** SEARCH DATA *************')
-        console.log(search_results)
-        console.log('*********** SEARCH DATA *************')
-        console.log('*********** SEARCH DATA *************')
     },[search_value])
 
 
     // Updates search term and search results
     const addTerm = (text) => {
-        getSearchResults(text, page)
+        getSearchResults(text, search_results.page)
             .then((results) => {
                 setData(results)
             })
 
-        const search_term = text;
-        setSearchValue(search_term)
+        setSearchValue(text)
     }
 
     //const data = search_results
@@ -105,10 +126,6 @@ const HomeSearch = () => {
     // Handles the updated item from EditItem component form
     const handleUpdated = async (updated) => {
 
-        console.log(edit_item)
-        console.log('||||||||||||  UPDATED BELOW EDIT ITEM ABOVE |||||||||||||||')
-        console.log(updated)
-
         if (updated === 'cancel_update' ||
             (edit_item.title === updated.title && edit_item.comment === updated.comment)) {
             // reset view and don't update item
@@ -117,57 +134,46 @@ const HomeSearch = () => {
                 setEditView(false)
             }
 
-            alert('NOT UPDASTED')
 
-            // TODO:: return
         } else {
 
-            alert('Should be udated')
+            updateItemRq({id: edit_item.id, comment : updated.comment, title: updated.title})
+                .then(() => {
+
+                    setEditItem({})
+                    setEditView(false)
+                })
 
 
-            let updated_items = [...search_results]
+
+
+            let updated_items = [...search_results.items]
 
             updated_items.map(item => {
 
                 if (item.id === edit_item.id) {
+
+                    alert(updated.title)
                     item.title = updated.title
                     item.comment = updated.comment
                 }
             })
 
-            setData(updated_items)
-            console.log(updated_items)
-            console.log('|||||||||||||| THE UPDATED ||||||||||||||||||')
-            console.log('|||||||||||||| THE UPDATED ||||||||||||||||||')
-            console.log('|||||||||||||| THE UPDATED ||||||||||||||||||')
-            console.log('|||||||||||||| THE UPDATED ||||||||||||||||||')
-            console.log('|||||||||||||| THE UPDATED ||||||||||||||||||')
-            console.log('|||||||||||||| THE UPDATED ||||||||||||||||||')
-            console.log('|||||||||||||| THE UPDATED ||||||||||||||||||')
-
-
-            const test = await updateItemRq({id: edit_item.id, comment : updated.comment, title: updated.title})
-
-            console.log(test)
-            console.log('***********************   TET ABOVBE ********************')
-            console.log('***********************   TET ABOVBE ********************')
-            console.log('***********************   TET ABOVBE ********************')
-            console.log('***********************   TET ABOVBE ********************')
-            console.log('***********************   TET ABOVBE ********************')
-
-            setEditItem({})
-            setEditView(false)
-
-
-
+            let new_items = {...search_results}
+            new_items.items = updated_items
+            setData(new_items)
         }
 
-        // else send item to be updated
 
-        console.log(search_results)
-        console.log('*********** UPDATED DATA SET AGAIN *******************')
-        //const response = resetPassword(data);
 
+    }
+
+    const handlePaginate = (page_no) => {
+        //alert(page)
+        getSearchResults(search_value, page_no)
+            .then((results) => {
+                setData(results)
+            })
 
 
     }
@@ -209,30 +215,25 @@ const HomeSearch = () => {
 
         ]
 
+    const { items } = search_results
+
     return (
-        <div>
+        <div className="app content">
             <SearchForm
                 addTerm={addTerm}
                 term={search_value}
-            />
-            <CreateItemForm
             />
             <EditItem
                 item={edit_item}
                 view={edit_view}
                 handleUpdated={handleUpdated}
             />
-            <DataTable
-                theme="solarized"
+            <Pagination
+                pages={search_results.pages}
+                handlePaginate={handlePaginate}
+                items={items}
                 columns={columns}
-                data={search_results.items}
-                title='DB ID items...'
-                striped={true}
-                highlightOnHover={true}
-                pointerOnHover={true}
-                defaultSortField="id"
-                defaultSortAsc={true}
-
+                edit_view={edit_view}
             />
         </div>
     );

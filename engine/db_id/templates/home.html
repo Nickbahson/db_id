@@ -2,6 +2,7 @@
 {% block content %}
 
 <h1> App Home !!</h1>
+<div id="home_search"> Loading app .....</div>
     {% for item in items.items %}
         <article class="media content-section">
             <div class="media-body">
@@ -25,3 +26,9 @@
       {% endif %}
     {% endfor %}
 {% endblock content %}
+
+{% block javascript %}
+    <script src="{{ url_for('static', filename='libs/build/home_search.bundle.js') }}">
+
+    </script>
+{% endblock javascript %}

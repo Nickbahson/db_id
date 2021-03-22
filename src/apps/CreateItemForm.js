@@ -10,19 +10,11 @@ const CreateItemForm = () => {
 
         const created = await createItemRq(data)
 
-        console.log(created)
-        console.log('|||||||||||||| THE CREATED |||||||||||||||||||')
-        console.log('|||||||||||||| THE CREATED |||||||||||||||||||')
-        console.log('|||||||||||||| THE CREATED |||||||||||||||||||')
-        console.log('|||||||||||||| THE CREATED |||||||||||||||||||')
-
-
-
     }
 
 
     return (
-        <div>
+        <div className="create-item-form">
 
             <form style={{display: 'grid', width:'auto', padding: '.3em'}} onSubmit={handleSubmit(handleCreateItem)}>
                 <div>

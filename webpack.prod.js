@@ -8,8 +8,6 @@ const TerserPlugin = require('terser-webpack-plugin')
 
 module.exports = merge(common,{
     mode: 'production',
-    //devtool: false,
-    //entry: './src/index.js',
     output: {
         filename: "[name].bundle.js",
         path: path.join(__dirname, '/engine/db_id/static/libs/build')

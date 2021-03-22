@@ -7,16 +7,9 @@ import os
 class Config:
     basedir = os.path.abspath(os.path.dirname(__file__))
     db_path = os.path.join(os.path.dirname(__file__), '../app_data.db')
-    company_data_db_path = os.path.join(os.path.dirname(__file__), '../company_data.db')
-    test_data_db_path = os.path.join(os.path.dirname(__file__), '../test_data.db')
-    search = os.path.join(os.path.dirname(__file__), '../searchdata.db')
     db_uri = 'sqlite:///{}'.format(db_path)
     SECRET_KEY = '8c354020b6123bc8a8ffdeba488ae749'
     SQLALCHEMY_DATABASE_URI = db_uri  # specify any other
-    SQLALCHEMY_BINDS = {
-        'company_data': 'sqlite:///{}'.format(company_data_db_path),
-        'test_data': 'sqlite:///{}'.format(test_data_db_path)
-    }
     SQLALCHEMY_TRACK_MODIFICATIONS = True #for full text search changes
 
     # flask-msearch will use table name as elasticsearch index name unless set __msearch_index__

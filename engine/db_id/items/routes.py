@@ -112,35 +112,17 @@ def api_search_results():
     data = json.loads(request.data)
     search_value = "%{}%".format(data.get('text'))
     page = data.get('page')
-    print(page)
-    print(page)
-    print(page)
-    print(page)
-    print(page)
-    print(page)
-    print(page)
-    print(page)
-    print(page)
-    print(page)
-    print(page)
-    print(page)
-    print(page)
-    print(page)
-    print(page)
-    print(page)
-    results = Item.query.order_by(Item.updated_on.desc()).filter(Item.title.like(search_value)).paginate(per_page=50, page=page)
+    items_pp: int = 50
+    results = Item.query.order_by(Item.id.asc()).filter(Item.title.like(search_value)).paginate(per_page=items_pp, page=page)
     result = items_schema.dump(results.items)
 
     item_l = {
         'page': results.per_page,
-        'pages': list(results.iter_pages()),
+        'pages': list(results.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2)),
         'items': result,
         'items_pp': results.per_page
     }
 
     response = jsonify(item_l)
-    print(response)
-
-
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
